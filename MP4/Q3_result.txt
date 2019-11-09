@@ -1,0 +1,22 @@
+> # Summary statistics of theoretical values
+> summary(vapdata$theoretical)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.2820  0.4175  0.6555  0.7606  1.0250  1.5500 
+  # Summary statistics of experimental values
+> summary(vapdata$experimental)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.2760  0.4305  0.6675  0.7599  1.0275  1.5400 
+
+ > mean.npar.boot = boot(data = diff, mean.npar, R = 999, sim = "ordinary", stype = "i")
+> # caclculate 95% confidence interval using percentile bootstrap
+> boot.ci(mean.npar.boot,conf = 0.95, type = "perc")
+BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+Based on 999 bootstrap replicates
+
+CALL : 
+boot.ci(boot.out = mean.npar.boot, conf = 0.95, type = "perc")
+
+Intervals : 
+Level     Percentile     
+95%   (-0.0062,  0.0076 )  
+Calculations and Intervals on Original Scale

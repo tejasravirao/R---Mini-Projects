@@ -1,0 +1,42 @@
+> library(boot)
+> # read "gpa.csv" file 
+> gpacsv = read.csv("D:/Users/rao29/Documents/Sem 5/Stats for Data Science/MP4/gpa.csv", header = TRUE, sep = ',')
+> # plot scatter plot of gpa against act
+> plot(gpacsv$gpa, gpacsv$act, main = "Scatterplot of GPA vs ACT", xlab = "GPA", ylab = "ACT", pch=20)
+Error in plot.new() : figure margins too large
+> # point estimate of population correlation(p) between GPA and ACT
+> rhop = cor(gpacsv$gpa,gpacsv$act)
+> print(paste("Point estimate of correlation between GPA and ACT = ", rhop))
+[1] "Point estimate of correlation between GPA and ACT =  0.269481803266264"
+> #define function to find correlation between GPA and ACT
+> corr.npar = function(x,indices){
++   
++   result = cor(gpacsv$gpa[indices], gpacsv$act[indices])
++   return(result)
++ }
+> # calculate point estimate, bias and standard error values
+> (corr.npar.boot = boot(data = gpacsv, corr.npar, R = 999, sim = "ordinary", stype = "i"))
+
+ORDINARY NONPARAMETRIC BOOTSTRAP
+
+
+Call:
+boot(data = gpacsv, statistic = corr.npar, R = 999, sim = "ordinary", 
+    stype = "i")
+
+
+Bootstrap Statistics :
+     original     bias    std. error
+t1* 0.2694818 0.00225264   0.1070387
+> # caclculate 95% confidence interval using percentile bootstrap
+> boot.ci(corr.npar.boot,conf = 0.95, type = "perc")
+BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+Based on 999 bootstrap replicates
+
+CALL : 
+boot.ci(boot.out = corr.npar.boot, conf = 0.95, type = "perc")
+
+Intervals : 
+Level     Percentile     
+95%   ( 0.0631,  0.4784 )  
+Calculations and Intervals on Original Scale

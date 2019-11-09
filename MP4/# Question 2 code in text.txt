@@ -1,0 +1,65 @@
+# Question 2
+
+# read "VOLTAGE.csv" file
+data = read.csv("D:/Users/rao29/Documents/Sem 5/Stats for Data Science/MP4/VOLTAGE.csv", header = TRUE, sep = ",")
+
+# obtain remote and local values separately
+remoteVal = subset(data, location == "0")
+localVal = subset(data, location == "1")
+
+
+# Question 2(a)
+# plot side by side boxplots of voltage distributions at both locations
+boxplot(remoteVal$voltage, localVal$voltage, main = "Voltage Readings", names = c("Remote", "Local"), xlab = "Location", ylab = "Voltage")
+
+# get summary statistics for voltage at remote location
+
+summary(remoteVal$voltage)
+IQR(remoteVal$voltage)
+sd(remoteVal$voltage)
+
+# get summary statistics for voltage at local location
+
+summary(localVal$voltage)
+IQR(localVal$voltage)
+sd(localVal$voltage)
+
+# obtain normal QQ plots 
+par(mfrow = c(1,2))
+qqnorm(remoteVal$voltage, main = "Remote")
+qqline(remoteVal$voltage)
+qqnorm(localVal$voltage, main = "Local")
+qqline(localVal$voltage)
+
+
+# Question 2(b)
+# construct appropriate confidence interval with assumption
+# consider 95% CI
+
+alpha = 1-0.95
+
+# mean of voltages at remote
+(remoteVal.mean = mean(remoteVal$voltage))
+
+# mean of voltages at local
+(localVal.mean = mean(localVal$voltage))
+
+# variance of voltages at remote
+(remoteVal.var = var(remoteVal$voltage))
+
+# variance of voltages at local
+(localVal.var = var(localVal$voltage))
+
+# number of remote locations
+(n = nrow(remoteVal))
+
+# number of local locations
+(m = nrow(localVal))
+
+# CI for difference in means
+diff_means = remoteVal.mean - localVal.mean + c(-1,1)*qnorm(1-(alpha/2))*sqrt((remoteVal.var/n) + (localVal.var/m))
+diff_means
+
+t = t.test(remoteVal$voltage,localVal$voltage, alternative = "two.sided", conf.level = 0.95, var.equal = FALSE)
+(CI = t$conf.int)
+
